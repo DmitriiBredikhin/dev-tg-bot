@@ -6,7 +6,7 @@ import config from 'config';
 import { ogg } from './ogg.js';
 import { openai } from './openai.js';
 
-const bot = new Telegraf(config.get('TELEGRAM_TOKEN'));
+const bot = new Telegraf(config.get('TELEGRAM_TOKEN'), {handlerTimeout: 900000});
 
 const localSession = new LocalSession({
   database: 'sessions.json', // Файл для хранения данных сессий
