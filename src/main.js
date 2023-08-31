@@ -46,19 +46,20 @@ bot.command('start', async (ctx) => {
     code('Жду вашего голосового или текстового сообщения'),
     getMenu()
   );
-
-  //await ctx.reply('Отправить', buttonRepeat())
 });
 
 bot.action('Yes', async (ctx) => {
   try {
+    await ctx.answerCbQuery();
     const { messages } = await localSession.getSession(
       localSession.getSessionKey(ctx)
     );
     const msg = messages[messages.length - 1];
-    //console.log(messages)
     await ctx.editMessageReplyMarkup();
-    await processTextToChat(ctx, msg.content);
+    ///////////////////////////////////////////////
+    if(msg.role === openai.roles.USER) {
+      await processTextToChat(ctx, msg.content);
+    }
   } catch (e) {
     console.log('Error while text repeat YES', e.message);
   }
@@ -66,6 +67,7 @@ bot.action('Yes', async (ctx) => {
 
 bot.action('No', async (ctx) => {
   try {
+    await ctx.answerCbQuery();
     await ctx.editMessageReplyMarkup();
   } catch (e) {
     console.log('Error while text repeat NO', e.message);
